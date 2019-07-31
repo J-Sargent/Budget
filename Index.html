@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+  </head>
+  <body>
+    Hello, World!
+    <p id="manBox"></p>
+    <input type="button" value="Close" onclick="google.script.host.close()" />
+  </body>
+  <script>
+    google.script.run
+      .withSuccessHandler(function(response) {
+        manBox = document.getElementById("manBox");
+        manBox.innerHTML = response;
+      })
+      .withFailureHandler(function(error) {
+        console.log(error);
+      })
+      .textTest();
+  </script>
+</html>

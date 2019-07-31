@@ -10,6 +10,19 @@ var nIncomeSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
 var yearlySheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
   "Yearly"
 );
+function onOpen() {
+  SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
+    .createMenu("Dialog")
+    .addItem("Open", "openDialog")
+    .addToUi();
+}
+
+function openDialog() {
+  var html = HtmlService.createHtmlOutputFromFile("Index");
+  SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
+    .showModalDialog(html, "Dialog title");
+}
+
 function myFunction() {}
 
 function getTest() {
@@ -39,7 +52,7 @@ function flatten(arrayOfArrays) {
 function updateFuture() {
   testBudgetData; //Will be A3:C
   testFutureData; //Will be A3:D
-  var resultToAlert = testFutureData.map(function(futureLine) {
+  var resultToAlert = testFutureData.filter(function(futureLine) {
     var differentLineItem = testBudgetData.filter(function(budgetLine) {
       Logger.log("fut " + futureLine[2]);
       Logger.log("bud " + budgetLine[1]);
@@ -47,9 +60,10 @@ function updateFuture() {
     });
     Logger.log("x" + differentLineItem);
     differentLineItem = flatten(differentLineItem);
-    return differentLineItem;
+    return differentLineItem.length > 1;
   });
   Logger.log(resultToAlert);
+  //need to finish once Ive figured out alerts
 }
 
 function runningTotal(arr) {
