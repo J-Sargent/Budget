@@ -1,0 +1,64 @@
+<script>
+  google.script.run
+    .withSuccessHandler(function(response) {
+      console.log(response);
+      response.forEach(function(obj) {
+        var newDiv = document.createElement("div");
+        newDiv.className = "error-div";
+        var future = document.createTextNode(obj.futureError);
+        var budget = document.createTextNode(obj.budgetError);
+        var newButton = document.createElement("button");
+        newButton.innerHTML = "kaboodle";
+        newButton.onclick = function() {
+          test();
+        };
+        newDiv.appendChild(future);
+        newDiv.appendChild(document.createElement("br"));
+        newDiv.appendChild(budget);
+        newDiv.appendChild(document.createElement("br"));
+        newDiv.appendChild(newButton);
+        var currentDiv = document.getElementById("div1");
+        document.body.insertBefore(newDiv, currentDiv);
+      });
+    })
+    .withFailureHandler(function(error) {
+      console.log(error);
+    })
+    .updateFuture();
+
+  // google.script.run
+  //   .withSuccessHandler(function(response) {
+  //     console.log(response);
+  //     response.forEach(function(futureRow) {
+  //       var newDiv = document.createElement("div");
+  //       var fart = document.createTextNode("fart");
+  //       newDiv.appendChild(fart);
+  //       var currentDiv = document.getElementById("div1");
+  //       document.body.insertBefore(newDiv, currentDiv);
+  //     });
+  //   })
+  //   .withFailureHandler(function(error) {
+  //     console.log(error);
+  //   })
+  //   .arrayTest();
+
+  function test() {
+    google.script.run
+      .withSuccessHandler(function(response) {
+        manBox = document.getElementById("errorList");
+        manBox.innerHTML = response;
+      })
+      .withFailureHandler(function(error) {
+        console.log(error);
+      })
+      .textTest();
+  }
+
+  // google.script.run
+  //   .withSuccessHandler(function(response) {
+  //   })
+  //   .withFailureHandler(function(error) {
+  //     console.log(error);
+  //   })
+  //   .functionName();
+</script>

@@ -10,18 +10,6 @@ var nIncomeSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
 var yearlySheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
   "Yearly"
 );
-function onOpen() {
-  SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
-    .createMenu("Dialog")
-    .addItem("Open", "openDialog")
-    .addToUi();
-}
-
-function openDialog() {
-  var html = HtmlService.createHtmlOutputFromFile("Index");
-  SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
-    .showModalDialog(html, "Dialog title");
-}
 
 function myFunction() {}
 
@@ -49,20 +37,59 @@ function flatten(arrayOfArrays) {
   return [].concat.apply([], arrayOfArrays);
 }
 
+function createObject(array) {
+  Logger.log("createObject called");
+  var isBudget = array.length == 3;
+  Logger.log("isBudget " + isBudget);
+  var line = {
+    day: isBudget ? array[0] : array[1],
+    description: isBudget ? array[1] : array[2],
+    change: isBudget ? array[2] : array[3]
+  };
+  if (!isBudget) {
+    line.month = array[0];
+  }
+  Logger.log(line);
+  return line;
+}
+
 function updateFuture() {
-  testBudgetData; //Will be A3:C
-  testFutureData; //Will be A3:D
-  var resultToAlert = testFutureData.filter(function(futureLine) {
-    var differentLineItem = testBudgetData.filter(function(budgetLine) {
-      Logger.log("fut " + futureLine[2]);
-      Logger.log("bud " + budgetLine[1]);
-      return futureLine[2] == budgetLine[1];
+  // testBudgetData; //Will be A3:C
+  // testFutureData; //Will be A3:D
+  var budgetData = budgetSheet.getRange("A3:C").getDisplayValues();
+  var futureData = futureSheet.getRange("A3:D").getDisplayValues();
+  var resultToAlert = [];
+  futureData.forEach(function(futureLine) {
+    budgetData.forEach(function(budgetLine) {
+      if (
+        futureLine[2] == budgetLine[1] &&
+        (futureLine[1] != budgetLine[0] || futureLine[3] != budgetLine[2])
+      ) {
+        //logic for comparing errors
+        //  var futureError = createObject(futureLine);
+        //  var budgetError = createObject(budgetLine);
+        var errorArray = { futureError: futureLine, budgetError: budgetLine };
+        resultToAlert.push(errorArray);
+      }
     });
-    Logger.log("x" + differentLineItem);
-    differentLineItem = flatten(differentLineItem);
-    return differentLineItem.length > 1;
   });
+
+  //   var resultToAlert = testFutureData.filter(function(futureLine) {
+  //     var differentLineItem = testBudgetData.forEach(function(budgetLine) {
+  // if (futureLine[2] == budgetLine[1]) {
+  // 	var futureError = createObject(futureLine);
+  // 	var budgetError = createObject(budgetLine);
+  // 	var errorArray =[futureError,budgetError];
+  // 	return errorArray;
+  // }
+  // return false;
+  //return futureLine[2] == budgetLine[1];
+  //   });
+  //   differentLineItem = flatten(differentLineItem);
+  //   return differentLineItem.length > 1;
+  // });
   Logger.log(resultToAlert);
+  return resultToAlert;
   //need to finish once Ive figured out alerts
 }
 
