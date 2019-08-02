@@ -1,30 +1,56 @@
 <script>
-  google.script.run
-    .withSuccessHandler(function(response) {
-      console.log(response);
-      response.forEach(function(obj) {
-        var newDiv = document.createElement("div");
-        newDiv.className = "error-div";
-        var future = document.createTextNode(obj.futureError);
-        var budget = document.createTextNode(obj.budgetError);
-        var newButton = document.createElement("button");
-        newButton.innerHTML = "kaboodle";
-        newButton.onclick = function() {
-          test();
-        };
-        newDiv.appendChild(future);
-        newDiv.appendChild(document.createElement("br"));
-        newDiv.appendChild(budget);
-        newDiv.appendChild(document.createElement("br"));
-        newDiv.appendChild(newButton);
-        var currentDiv = document.getElementById("div1");
-        document.body.insertBefore(newDiv, currentDiv);
-      });
-    })
-    .withFailureHandler(function(error) {
-      console.log(error);
-    })
-    .updateFuture();
+  function findErrors() {
+    google.script.run
+      .withSuccessHandler(function(response) {
+        response.forEach(function(obj) {
+          var newDiv = document.createElement("div");
+          newDiv.className = "error-div";
+          var future = Object.entries(obj.futureError);
+          newDiv.appendChild(document.createTextNode("Future: "));
+          future.forEach(function(property) {
+            var par = document.createElement("p");
+            //console.log(property[1]);
+            //propertyAsText = JSON.stringify(property[1]);
+            //text = document.createTextNode(propertyAsText);
+            par.appendChild(
+              document.createTextNode(property[0] + ": " + property[1])
+            );
+            newDiv.appendChild(par);
+          });
+          newDiv.appendChild(document.createElement("br"));
+          newDiv.appendChild(document.createTextNode("Budget: "));
+          var budget = Object.entries(obj.budgetError);
+          budget.forEach(function(property) {
+            var par = document.createElement("p");
+            //console.log(property[1]);
+            //propertyAsText = JSON.stringify(property[1]);
+            //text = document.createTextNode(propertyAsText);
+            // text = document.createTextNode(property[0]);
+            // newDiv.appendChild(text);
+
+            par.appendChild(
+              document.createTextNode(property[0] + ": " + property[1])
+            );
+            newDiv.appendChild(par);
+          });
+          var newButton = document.createElement("button");
+          newButton.innerHTML = "kaboodle";
+          newButton.onclick = function() {
+            test();
+          };
+          //newDiv.appendChild(future);
+          newDiv.appendChild(document.createElement("br"));
+          newDiv.appendChild(document.createElement("br"));
+          newDiv.appendChild(newButton);
+          var currentDiv = document.getElementById("div1");
+          document.body.insertBefore(newDiv, currentDiv);
+        });
+      })
+      .withFailureHandler(function(error) {
+        console.log(error);
+      })
+      .findErrors();
+  }
 
   // google.script.run
   //   .withSuccessHandler(function(response) {

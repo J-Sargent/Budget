@@ -38,9 +38,7 @@ function flatten(arrayOfArrays) {
 }
 
 function createObject(array) {
-  Logger.log("createObject called");
   var isBudget = array.length == 3;
-  Logger.log("isBudget " + isBudget);
   var line = {
     day: isBudget ? array[0] : array[1],
     description: isBudget ? array[1] : array[2],
@@ -49,26 +47,43 @@ function createObject(array) {
   if (!isBudget) {
     line.month = array[0];
   }
-  Logger.log(line);
   return line;
 }
 
-function updateFuture() {
+function findErrors() {
   // testBudgetData; //Will be A3:C
   // testFutureData; //Will be A3:D
   var budgetData = budgetSheet.getRange("A3:C").getDisplayValues();
   var futureData = futureSheet.getRange("A3:D").getDisplayValues();
   var resultToAlert = [];
+  var futureObjectArray = [];
+  var budgetObjectArray = [];
   futureData.forEach(function(futureLine) {
-    budgetData.forEach(function(budgetLine) {
+    var futureObject = createObject(futureLine);
+    futureObjectArray.push(futureObject);
+  });
+  budgetData.forEach(function(budgetLine) {
+    var budgetObject = createObject(budgetLine);
+    budgetObjectArray.push(budgetObject);
+  });
+  //Logger.log(futureObjectArray);
+
+  futureObjectArray.forEach(function(futureObject) {
+    budgetObjectArray.forEach(function(budgetObject) {
       if (
-        futureLine[2] == budgetLine[1] &&
-        (futureLine[1] != budgetLine[0] || futureLine[3] != budgetLine[2])
+        futureObject.description == budgetObject.description &&
+        (futureObject.day != budgetObject.day ||
+          futureObject.change != budgetObject.change)
       ) {
+        Logger.log("if called");
         //logic for comparing errors
         //  var futureError = createObject(futureLine);
         //  var budgetError = createObject(budgetLine);
-        var errorArray = { futureError: futureLine, budgetError: budgetLine };
+        var errorArray = {
+          futureError: futureObject,
+          budgetError: budgetObject
+        };
+        Logger.log(errorArray);
         resultToAlert.push(errorArray);
       }
     });
@@ -88,8 +103,10 @@ function updateFuture() {
   //   differentLineItem = flatten(differentLineItem);
   //   return differentLineItem.length > 1;
   // });
+
   Logger.log(resultToAlert);
   return resultToAlert;
+  //uncomment .end
   //need to finish once Ive figured out alerts
 }
 
