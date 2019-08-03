@@ -2,16 +2,17 @@
   function findErrors() {
     google.script.run
       .withSuccessHandler(function(response) {
+        var i = 1;
         response.forEach(function(obj) {
           var newDiv = document.createElement("div");
+          var divName = "div" + i;
+          i++;
+          newDiv.id = divName;
           newDiv.className = "error-div";
           var future = Object.entries(obj.futureError);
           newDiv.appendChild(document.createTextNode("Future: "));
           future.forEach(function(property) {
             var par = document.createElement("p");
-            //console.log(property[1]);
-            //propertyAsText = JSON.stringify(property[1]);
-            //text = document.createTextNode(propertyAsText);
             par.appendChild(
               document.createTextNode(property[0] + ": " + property[1])
             );
@@ -22,26 +23,24 @@
           var budget = Object.entries(obj.budgetError);
           budget.forEach(function(property) {
             var par = document.createElement("p");
-            //console.log(property[1]);
-            //propertyAsText = JSON.stringify(property[1]);
-            //text = document.createTextNode(propertyAsText);
-            // text = document.createTextNode(property[0]);
-            // newDiv.appendChild(text);
-
             par.appendChild(
               document.createTextNode(property[0] + ": " + property[1])
             );
             newDiv.appendChild(par);
           });
-          var newButton = document.createElement("button");
-          newButton.innerHTML = "kaboodle";
-          newButton.onclick = function() {
-            test();
+          var changeButton = document.createElement("button");
+          changeButton.innerHTML = "Change";
+          changeButton.onclick = function() {
+            makeUpdateA(obj);
           };
-          //newDiv.appendChild(future);
+          var ignoreButton = document.createElement("button");
+          ignoreButton.innerHTML = "Ignore";
+          ignoreButton.onclick = function() {
+            ignore(divName);
+          };
           newDiv.appendChild(document.createElement("br"));
-          newDiv.appendChild(document.createElement("br"));
-          newDiv.appendChild(newButton);
+          newDiv.appendChild(changeButton);
+          newDiv.appendChild(ignoreButton);
           var currentDiv = document.getElementById("div1");
           document.body.insertBefore(newDiv, currentDiv);
         });
@@ -50,6 +49,11 @@
         console.log(error);
       })
       .findErrors();
+  }
+
+  function ignore(divName) {
+    var thisDiv = document.getElementById(divName);
+    thisDiv.parentNode.removeChild(thisDiv);
   }
 
   // google.script.run
@@ -67,6 +71,17 @@
   //     console.log(error);
   //   })
   //   .arrayTest();
+
+  function makeUpdateA(errorObj) {
+    google.script.run
+      .withSuccessHandler(function(response) {
+        console.log(response);
+      })
+      .withFailureHandler(function(error) {
+        console.log(error);
+      })
+      .makeUpdateB(errorObj);
+  }
 
   function test() {
     google.script.run
