@@ -31,6 +31,7 @@ function findErrors() {
     .getDisplayValues();
   var futureObjectArray = [];
   var budgetObjectArray = [];
+  var errorObjectPairs = [];
   futureData.forEach(function(futureLine, index) {
     var futureObject = createObject(futureLine, index);
     futureObjectArray.push(futureObject);
@@ -58,7 +59,12 @@ function findErrors() {
   return errorObjectPairs;
 }
 
-function makeUpdateB(errorObj) {
+function getErrorDivLength() {
+  Logger.log(errorObjectPairs);
+  //return errorObjectPairs.length;
+}
+
+function makeUpdate(errorObj) {
   var futureError = errorObj.futureError;
   var budgetError = errorObj.budgetError;
   var budgetArray = [

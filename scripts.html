@@ -1,7 +1,9 @@
 <script>
+  errorObjectPairs = [];
   function findErrors() {
     google.script.run
       .withSuccessHandler(function(response) {
+        errorObjectPairs = response;
         var i = 1;
         response.forEach(function(obj) {
           var newDiv = document.createElement("div");
@@ -31,7 +33,7 @@
           var changeButton = document.createElement("button");
           changeButton.innerHTML = "Change";
           changeButton.onclick = function() {
-            makeUpdateA(obj);
+            makeUpdate(obj, divName);
           };
           var ignoreButton = document.createElement("button");
           ignoreButton.innerHTML = "Ignore";
@@ -41,8 +43,8 @@
           newDiv.appendChild(document.createElement("br"));
           newDiv.appendChild(changeButton);
           newDiv.appendChild(ignoreButton);
-          var currentDiv = document.getElementById("div1");
-          document.body.insertBefore(newDiv, currentDiv);
+          var currentDiv = document.getElementById("responseDiv");
+          currentDiv.appendChild(newDiv);
         });
       })
       .withFailureHandler(function(error) {
@@ -72,15 +74,20 @@
   //   })
   //   .arrayTest();
 
-  function makeUpdateA(errorObj) {
+  function makeUpdate(errorObj, divName) {
     google.script.run
       .withSuccessHandler(function(response) {
-        console.log(response);
+        ignore(divName);
+        document.getElementById("alertDiv").innerHTML = response;
+        document.getElementById("alertDiv").style.visibility = "visible";
+        setTimeout(function() {
+          document.getElementById("alertDiv").style.visibility = "hidden";
+        }, 2000);
       })
       .withFailureHandler(function(error) {
         console.log(error);
       })
-      .makeUpdateB(errorObj);
+      .makeUpdate(errorObj);
   }
 
   function test() {
@@ -95,11 +102,7 @@
       .textTest();
   }
 
-  // google.script.run
-  //   .withSuccessHandler(function(response) {
-  //   })
-  //   .withFailureHandler(function(error) {
-  //     console.log(error);
-  //   })
-  //   .functionName();
+  function clearVisible() {
+    document.getElementById("responseDiv").innerHTML = "";
+  }
 </script>

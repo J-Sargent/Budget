@@ -4,10 +4,13 @@
     <?!= include('styles'); ?>
   </head>
   <body>
-    <div id="alertDiv"></div>
-    <button id="runFindErrors" onclick="findErrors()">"Run findErrors"</button>
+    <div id="alertDiv" style="visibility: hidden">a</div>
+    <button id="runFindErrors" onclick="findErrors()">
+      Find Errors in Future from Budget
+    </button>
+    <button id="runClearVisible" onclick="clearVisible()">Clear visible</button>
     <p id="manBox"></p>
-    <div id="div1"></div>
+    <div id="responseDiv"></div>
     <p id="errorList"></p>
     <?!= include('scripts'); ?>
   </body>
