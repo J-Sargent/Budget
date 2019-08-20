@@ -1,4 +1,10 @@
 <script>
+  var form = document.getElementById("csvForm");
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+    importCSV();
+  });
+
   errorObjectPairs = [];
   function findErrors() {
     google.script.run
@@ -104,5 +110,21 @@
 
   function clearVisible() {
     document.getElementById("responseDiv").innerHTML = "";
+  }
+
+  function importCSV() {
+    var csvDate = document.getElementById("CSVDate").value;
+    console.log("csvDate is " + csvDate);
+    google.script.run
+      .withSuccessHandler(function(response) {
+        console.log("the response should follow");
+        console.log(response);
+        var responseDive = document.getElementById("responseDiv");
+        responseDiv.innerHTML = response;
+      })
+      .withFailureHandler(function(error) {
+        console.log(error);
+      })
+      .importCSVFromGoogleDrive(csvDate);
   }
 </script>
