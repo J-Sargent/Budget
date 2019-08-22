@@ -15,18 +15,11 @@ function createObject(array, index) {
   return line;
 }
 
-// function rangeTest(){
-// 	var futureRange = futureSheet.getRange("A3:D")
-// 	var futureValues = futureRange.getDisplayValues();
-// 	futureValues.map(function(line){line.pushline.getRow()}
-//
-// }
-
 function findErrors() {
-  var budgetData = budgetSheet
+  var budgetData = sheets.budget
     .getRange("A" + START_ROW + ":C")
     .getDisplayValues();
-  var futureData = futureSheet
+  var futureData = sheets.future
     .getRange("B" + START_ROW + ":E")
     .getDisplayValues();
   var futureObjectArray = [];
@@ -59,41 +52,15 @@ function findErrors() {
   return errorObjectPairs;
 }
 
-function getErrorDivLength() {
-  Logger.log(errorObjectPairs);
-  //return errorObjectPairs.length;
-}
-
 function makeUpdate(errorObj) {
   var futureError = errorObj.futureError;
   var budgetError = errorObj.budgetError;
   var budgetArray = [
     [budgetError.day, budgetError.description, budgetError.change]
   ];
-  futureSheet
-    .getRange("C" + futureError.row + ":" + futureError.row + "")
+  sheets.future
+    .getRange(futureError.row, 3, 1, budgetArray[0].length)
     .setValues(budgetArray);
   var text = "Future row " + futureError.row + " was changed.";
   return text;
 }
-//Tests
-
-// var testRunningArray = [[850], [-50], [-40], [-75]];
-//
-// function testRunningTotal() {
-//   runningTotal(testRunningArray);
-// }
-
-// var testBudgetData = [
-// 	//["No date yet", "Medication", "-100"],
-// 	["1", "Fun Money", "-200"],
-// 	["3", "Atmos", "-50"],
-// 	["15", "Nate Income", "2,800"]
-// ];
-//
-// var testFutureData = [
-// 	["June", "1", "Fun Money", "-200"],
-// 	["June", "3", "Atmos", "-45"],
-// 	["July", "5", "Firstmark", "-50"]
-// 	//["June", "14", "Nate Income", "2,800"]
-// ];

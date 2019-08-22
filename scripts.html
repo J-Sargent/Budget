@@ -183,6 +183,10 @@
       .goToGarden();
   }
 
+  function markPaid() {
+    google.script.run.markPaid();
+  }
+
   function hideSheets() {
     google.script.run
       .withSuccessHandler(function(response) {})

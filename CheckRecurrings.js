@@ -1,6 +1,4 @@
 function createMonthlyObject(date, description, amount) {
-  //var rowNum = index + START_ROW;
-  //var isBudget = array.length == 3;
   var formatedDate = Utilities.formatDate(new Date(date), "CST", "M/d");
   var row = {
     date: formatedDate,
@@ -13,8 +11,8 @@ function createMonthlyObject(date, description, amount) {
 function monthlyBudgetPatterns(csvData) {
   //csvData comes in as [[Date, Type(Debit Card), Description, Check Number, Amount, Balance]]
   //budgetData is [[Description, last month, 2 months ago, 3 months ago]]
-  var budgetData = budgetSheet
-    .getRange(1, 5, budgetSheet.getLastRow(), budgetSheet.getLastColumn())
+  var budgetData = sheets.budget
+    .getRange(1, 5, sheets.budget.getLastRow(), sheets.budget.getLastColumn())
     .getDisplayValues();
   deleteMonthColumns();
   var csvArray = [];
@@ -41,13 +39,13 @@ function monthlyBudgetPatterns(csvData) {
     lastMonthArray.push([comment]);
     comment = "";
   });
-  budgetSheet
-    .getRange(1, 6, budgetSheet.getLastRow(), 1)
+  sheets.budget
+    .getRange(1, 6, sheets.budget.getLastRow(), 1)
     .setValues(lastMonthArray);
   return "Monthly budget patterns were updated. Please go verify current Budget dates and amounts are correct.";
 }
 
 function deleteMonthColumns() {
-  budgetSheet.deleteColumn(11);
-  budgetSheet.insertColumnAfter(5);
+  sheets.budget.deleteColumn(11);
+  sheets.budget.insertColumnAfter(5);
 }

@@ -4,6 +4,7 @@ var sheets = {
   future: ss.getSheetByName("Future"),
   budget: ss.getSheetByName("Budget"),
   paid: ss.getSheetByName("Paid"),
+  bank: ss.getSheetByName("Bank"),
   nIncomeRecord2019: ss.getSheetByName("NateIncomeRecord2019"),
   yearly: ss.getSheetByName("Yearly"),
   debts: ss.getSheetByName("Debts"),
@@ -14,39 +15,12 @@ var sheets = {
   christmas: ss.getSheetByName("Christmas")
 };
 
-var gardenSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-  "Garden"
-);
-
-var budgetSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-  "Budget"
-);
-var futureSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-  "Future"
-);
-var yearlySheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-  "Yearly"
-);
-
-var debtsSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Debts");
-var tripsSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Trips");
-var nateIncome2019Sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-  "Nate Income 2018"
-);
-
-var upworkCalculatorSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-  "Upwork Calculator"
-);
-var christmasSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-  "Christmas"
-);
-var paidSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Paid");
-
 function flatten(arrayOfArrays) {
   //need this because appsscript doesn't have array.flat
   return [].concat.apply([], arrayOfArrays);
 }
 
+// not using, but keep as a base if decide to turn it back to an in-cell function
 // function runningTotal(arr) {
 //   var runningArray = arr.shift();
 //   arr.forEach(function(row) {
@@ -64,7 +38,7 @@ function flatten(arrayOfArrays) {
 // }
 
 function runningTotalButton() {
-  futureData = futureSheet.getRange("E2:F").getValues();
+  futureData = sheets.future.getRange("E2:F").getValues();
   var initialValue = [futureData[0][1]];
   var runningTotalArray = [initialValue];
   for (var i = 1; i < futureData.length; i++) {
@@ -82,7 +56,7 @@ function runningTotalButton() {
     runningTotalArray.push([newTotal]);
   }
   Logger.log(runningTotalArray);
-  futureSheet
+  sheets.future
     .getRange(2, 6, runningTotalArray.length, runningTotalArray[0].length)
     .setValues(runningTotalArray);
 }
