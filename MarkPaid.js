@@ -1,6 +1,15 @@
 function markPaid() {
+  // Emma: is there a reason you aren't using a DataRange here?
   var futureData = sheets.future.getRange("A:G").getDisplayValues();
   futureData.shift();
+  /* Emma:
+     Perhaps consider a structure more like
+     var changes = {
+       marked: [],
+       delete: []
+     }
+     for these 2 arrays below.
+  */
   var markedArray = [];
   var rowsToDelete = [];
   futureData.forEach(function(row, index) {
@@ -12,11 +21,13 @@ function markPaid() {
   });
   var markedArrayWithDate = markedArray.map(function(row) {
     var date = Utilities.formatDate(new Date(), "CST", "MM/dd/yy hh:mm:ss");
+    // Emma: row.splice(-1, 1, date);
     row.pop();
     row.push(date);
     return row;
   });
   Logger.log(markedArrayWithDate);
+  // Emma: There is no sheet named "Paid" anymore. What is this function supposed to be doing?
   sheets.paid
     .getRange(
       sheets.paid.getLastRow(),

@@ -12,7 +12,7 @@ var sheets = {
   garden: ss.getSheetByName("Garden"),
   nIncomeRecord2018: ss.getSheetByName("Nate Income Record 2018"),
   upworkCalculator: ss.getSheetByName("Upwork Calculator"),
-  christmas: ss.getSheetByName("Christmas")
+  christmas: ss.getSheetByName("Christmas"),
 };
 
 function flatten(arrayOfArrays) {
@@ -38,6 +38,7 @@ function flatten(arrayOfArrays) {
 // }
 
 function runningTotalButton() {
+  // Emma: global declaration
   futureData = sheets.future.getRange("E2:F").getValues();
   var initialValue = [futureData[0][1]];
   var runningTotalArray = [initialValue];
@@ -46,9 +47,11 @@ function runningTotalButton() {
     var previousNumber = runningTotalArray[i - 1][0];
     Logger.log("previousNumber follows");
     Logger.log(previousNumber);
+    // TODO: var currentNumber = !currentNumber || !currentNumber.length ? 0 : futureData[i][0];
     var currentNumber = futureData[i][0];
     Logger.log("currentNumber follows");
     Logger.log(currentNumber);
+    // TODO: !currentNumber || !currentNumber.length catches all standard exceptions
     if (!currentNumber) {
       currentNumber = 0;
     }

@@ -3,11 +3,12 @@ function createMonthlyObject(date, description, amount) {
   var row = {
     date: formatedDate,
     description: description,
-    amount: amount
+    amount: amount,
   };
   return row;
 }
 
+// Emma: This function is kind of hard to read with all of the array locations
 function monthlyBudgetPatterns(csvData) {
   //csvData comes in as [[Date, Type(Debit Card), Description, Check Number, Amount, Balance]]
   //budgetData is [[Description, last month, 2 months ago, 3 months ago]]
@@ -45,6 +46,7 @@ function monthlyBudgetPatterns(csvData) {
   return "Monthly budget patterns were updated. Please go verify current Budget dates and amounts are correct.";
 }
 
+// Emma: Is this still used anywhere?
 function deleteMonthColumns() {
   sheets.budget.deleteColumn(11);
   sheets.budget.insertColumnAfter(5);

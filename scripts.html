@@ -14,7 +14,7 @@
       "Trips",
       "Nate Income Record 2018",
       "Upwork Calculator",
-      "Christmas"
+      "Christmas",
     ];
     var parentDiv = document.getElementById("showButtons");
     buttonArray.forEach(function(sheetName) {
@@ -35,11 +35,13 @@
     parentDiv.appendChild(newButton);
   })();
 
+  // Emma: global variable declaration, also unnecessary because it's only used below once
   errorObjectPairs = [];
   function findErrors() {
     google.script.run
       .withSuccessHandler(function(response) {
         errorObjectPairs = response;
+        // Emma: Instead of using i, why not just use the index of the forEach loop?
         var i = 1;
         response.forEach(function(obj) {
           var newDiv = document.createElement("div");
@@ -126,6 +128,7 @@
       .makeUpdate(errorObj);
   }
 
+  // Emma: Still using this?
   function test() {
     google.script.run
       .withSuccessHandler(function(response) {
@@ -138,6 +141,7 @@
       .textTest();
   }
 
+  // Emma: Still using this?
   function clearVisible() {
     document.getElementById("responseDiv").innerHTML = "";
   }
@@ -174,6 +178,7 @@
       .copyBudget(copyDate);
   }
 
+  // Emma: Still using this?
   function hiddenGarden() {
     google.script.run
       .withSuccessHandler(function(response) {})
@@ -187,6 +192,7 @@
     google.script.run.markPaid();
   }
 
+  // Emma: Still using this?
   function hideSheets() {
     google.script.run
       .withSuccessHandler(function(response) {})
@@ -195,6 +201,7 @@
       })
       .goHideSheets();
   }
+  // Emma: Still using this?
   function runningTotalButton() {
     google.script.run
       .withSuccessHandler(function(response) {})

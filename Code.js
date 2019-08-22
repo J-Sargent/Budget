@@ -1,5 +1,6 @@
+// Emma: You can name these anything you want you know. "showSidebar" is the only part that's specifically a function name.
 function onOpen() {
-  SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
+  SpreadsheetApp.getUi()
     .createMenu("Custom Menu")
     .addItem("Show sidebar", "showSidebar")
     .addToUi();
@@ -21,19 +22,19 @@ function customChart() {
     .setOption("title", "Upwork Fee %")
     .setOption("series", {
       0: {
-        targetAxisIndex: 0
+        targetAxisIndex: 0,
       },
       1: {
-        targetAxisIndex: 1
-      }
+        targetAxisIndex: 1,
+      },
     })
     .setOption("hAxis", {
       gridlines: {
-        count: 15
+        count: 15,
       },
       minorGridlines: {
-        count: 3
-      }
+        count: 3,
+      },
     })
     .build();
 

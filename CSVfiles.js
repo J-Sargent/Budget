@@ -9,6 +9,7 @@ function importCSVFromGoogleDrive(fileDate) {
     : null;
   if (!file) {
     Logger.log("no file");
+    // Emma: You could just return the string here
     var errorResponseString = "CSV file not found.";
     return errorResponseString;
   }
@@ -17,6 +18,7 @@ function importCSVFromGoogleDrive(fileDate) {
   sheets.bank
     .getRange(1, 1, csvData.length, csvData[0].length)
     .setValues(csvData);
+  // Emma: Here you should probably just return monthlyBudgetPatterns(csvData) instead of writing 3 lines.
   var responseString = "";
   responseString += monthlyBudgetPatterns(csvData);
   return responseString;
