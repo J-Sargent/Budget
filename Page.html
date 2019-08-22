@@ -8,11 +8,29 @@
     <button id="runFindErrors" onclick="findErrors()">
       Find Errors in Future from Budget
     </button>
-    <form id="csvForm">
-      First Date of CSV: <input type="date" id="CSVDate" />
-      <input type="submit" value="Import CSV" />
-    </form>
+    <!--
+      <form id="csvForm">
+        First Date of CSV: <input type="date" id="CSVDate" />
+        <input type="submit" value="Import CSV" />
+      </form>
+    -->
+
+    <label for="firstDate">First Date:</label> <br />
+    <input type="date" id="firstDate" name="firstDate" /> <br />
+    <button id="runImportCSV" onclick="importCSV()">Import CSV</button> <br />
+    <button id="runCopyBudget" onclick="copyBudget()">Copy Budget</button>
+    <br />
+
+    <button id="runRunningTotal" onclick="runningTotalButton()">
+      Update Running Total
+    </button>
+    <br />
     <button id="runClearVisible" onclick="clearVisible()">Clear visible</button>
+    <p>Click below to show a hidden tab</p>
+    <!--
+      <button id="runHiddenGarden" onclick="hiddenGarden()">Garden</button> <br />
+    -->
+    <div id="showButtons"></div>
     <p id="manBox"></p>
     <div id="responseDiv"></div>
     <p id="errorList"></p>

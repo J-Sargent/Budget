@@ -1,16 +1,45 @@
-var futureSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-  "Future"
+var ss = SpreadsheetApp.getActiveSpreadsheet();
+var sheets = {
+  accountSummary: ss.getSheetByName("AccountsSummary"),
+  future: ss.getSheetByName("Future"),
+  budget: ss.getSheetByName("Budget"),
+  paid: ss.getSheetByName("Paid"),
+  nIncomeRecord2019: ss.getSheetByName("NateIncomeRecord2019"),
+  yearly: ss.getSheetByName("Yearly"),
+  debts: ss.getSheetByName("Debts"),
+  trips: ss.getSheetByName("Trips"),
+  garden: ss.getSheetByName("Garden"),
+  nIncomeRecord2018: ss.getSheetByName("Nate Income Record 2018"),
+  upworkCalculator: ss.getSheetByName("Upwork Calculator"),
+  christmas: ss.getSheetByName("Christmas")
+};
+
+var gardenSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
+  "Garden"
 );
+
 var budgetSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
   "Budget"
 );
-var nIncomeSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
-  "NateIncomeRecord2019"
+var futureSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
+  "Future"
 );
 var yearlySheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
   "Yearly"
 );
 
+var debtsSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Debts");
+var tripsSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Trips");
+var nateIncome2019Sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
+  "Nate Income 2018"
+);
+
+var upworkCalculatorSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
+  "Upwork Calculator"
+);
+var christmasSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
+  "Christmas"
+);
 var paidSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Paid");
 
 function flatten(arrayOfArrays) {
@@ -18,17 +47,42 @@ function flatten(arrayOfArrays) {
   return [].concat.apply([], arrayOfArrays);
 }
 
-function runningTotal(arr) {
-  var runningArray = arr.shift();
-  arr.forEach(function(row) {
-    if (row[0].length == 0) {
-      return;
+// function runningTotal(arr) {
+//   var runningArray = arr.shift();
+//   arr.forEach(function(row) {
+//     var lastRunningArrayIndex = runningArray.length - 1;
+//     var lastNumber = parseInt(runningArray[lastRunningArrayIndex]);
+//     if (row[0].length == 0) {
+//       runningArray.push(lastNumber);
+//     } else {
+//       var newValue = row[0] + lastNumber;
+//       runningArray.push(newValue);
+//     }
+//     return runningArray;
+//   });
+//   return runningArray;
+// }
+
+function runningTotalButton() {
+  futureData = futureSheet.getRange("E2:F").getValues();
+  var initialValue = [futureData[0][1]];
+  var runningTotalArray = [initialValue];
+  for (var i = 1; i < futureData.length; i++) {
+    Logger.log("in for");
+    var previousNumber = runningTotalArray[i - 1][0];
+    Logger.log("previousNumber follows");
+    Logger.log(previousNumber);
+    var currentNumber = futureData[i][0];
+    Logger.log("currentNumber follows");
+    Logger.log(currentNumber);
+    if (!currentNumber) {
+      currentNumber = 0;
     }
-    var lastRunningArrayIndex = runningArray.length - 1;
-    var lastNumber = parseInt(runningArray[lastRunningArrayIndex]);
-    var newValue = row[0] + lastNumber;
-    runningArray.push(newValue);
-    return runningArray;
-  });
-  return runningArray;
+    var newTotal = previousNumber + currentNumber;
+    runningTotalArray.push([newTotal]);
+  }
+  Logger.log(runningTotalArray);
+  futureSheet
+    .getRange(2, 6, runningTotalArray.length, runningTotalArray[0].length)
+    .setValues(runningTotalArray);
 }

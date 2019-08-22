@@ -27,7 +27,7 @@ function findErrors() {
     .getRange("A" + START_ROW + ":C")
     .getDisplayValues();
   var futureData = futureSheet
-    .getRange("A" + START_ROW + ":D")
+    .getRange("B" + START_ROW + ":E")
     .getDisplayValues();
   var futureObjectArray = [];
   var budgetObjectArray = [];
@@ -71,7 +71,7 @@ function makeUpdate(errorObj) {
     [budgetError.day, budgetError.description, budgetError.change]
   ];
   futureSheet
-    .getRange("B" + futureError.row + ":D" + futureError.row + "")
+    .getRange("C" + futureError.row + ":" + futureError.row + "")
     .setValues(budgetArray);
   var text = "Future row " + futureError.row + " was changed.";
   return text;

@@ -16,10 +16,7 @@ function monthlyBudgetPatterns(csvData) {
   var budgetData = budgetSheet
     .getRange(1, 5, budgetSheet.getLastRow(), budgetSheet.getLastColumn())
     .getDisplayValues();
-  // var budgetRangeA1 = budgetSheet
-  //   .getRange(2, 5, budgetSheet.getLastRow(), budgetSheet.getLastColumn())
-  //   .getA1Notation();
-  // Logger.log(budgetRangeA1);
+  deleteMonthColumns();
   var csvArray = [];
   var monthlyBudgetArray = [];
   budgetData.shift();
@@ -32,27 +29,25 @@ function monthlyBudgetPatterns(csvData) {
     var newObject = createMonthlyObject("", row[0], "");
     monthlyBudgetArray.push(newObject);
   });
-  //Logger.log(monthlyBudgetArray);
-  var lastMonthArray = [["july"]]; // need to put month name in eventually
+  var month = Utilities.formatDate(new Date(csvData[0][0]), "CST", "MMM");
+  var lastMonthArray = [[month]]; // need to put month name in eventually
   monthlyBudgetArray.forEach(function(monthlyObject) {
-    var comment = ".";
+    var comment = "";
     csvArray.forEach(function(csvObject) {
       if (monthlyObject.description == csvObject.description) {
-        comment = csvObject.date + "  " + csvObject.amount;
+        comment += "  " + csvObject.date + "  ||  " + csvObject.amount;
       }
     });
     lastMonthArray.push([comment]);
+    comment = "";
   });
-  //Logger.log("lastMonthArray length is " + lastMonthArray.length);
-  //  Logger.log(budgetSheet.getLastRow());
-  thingy = budgetSheet
-    .getRange(1, 6, budgetSheet.getLastRow(), 1)
-    .getDisplayValues();
-  //Logger.log("thingy length is " + thingy.length);
-  //Logger.log(lastMonthArray);
-
   budgetSheet
     .getRange(1, 6, budgetSheet.getLastRow(), 1)
     .setValues(lastMonthArray);
   return "Monthly budget patterns were updated. Please go verify current Budget dates and amounts are correct.";
+}
+
+function deleteMonthColumns() {
+  budgetSheet.deleteColumn(11);
+  budgetSheet.insertColumnAfter(5);
 }

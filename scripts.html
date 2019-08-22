@@ -1,9 +1,39 @@
 <script>
-  var form = document.getElementById("csvForm");
-  form.addEventListener("submit", function(event) {
-    event.preventDefault();
-    importCSV();
-  });
+  // var form = document.getElementById("csvForm");
+  // form.addEventListener("submit", function(event) {
+  //   event.preventDefault();
+  //   importCSV();
+  // });
+
+  //add class to all buttons soon
+
+  (function() {
+    var buttonArray = [
+      "Garden",
+      "Debts",
+      "Trips",
+      "Nate Income Record 2018",
+      "Upwork Calculator",
+      "Christmas"
+    ];
+    var parentDiv = document.getElementById("showButtons");
+    buttonArray.forEach(function(sheetName) {
+      var newButton = document.createElement("button");
+      newButton.className = "show-button";
+      newButton.innerHTML = sheetName;
+      newButton.onclick = function() {
+        google.script.run.showSheet(sheetName);
+      };
+      parentDiv.appendChild(newButton);
+    });
+    var newButton = document.createElement("button");
+    newButton.className = "hide-button";
+    newButton.innerHTML = "Hide These Sheets";
+    newButton.onclick = function() {
+      google.script.run.hideSheets(buttonArray);
+    };
+    parentDiv.appendChild(newButton);
+  })();
 
   errorObjectPairs = [];
   function findErrors() {
@@ -113,8 +143,8 @@
   }
 
   function importCSV() {
-    var csvDate = document.getElementById("CSVDate").value;
-    console.log("csvDate is " + csvDate);
+    var csvDate = document.getElementById("firstDate").value;
+    console.log(typeof csvDate);
     google.script.run
       .withSuccessHandler(function(response) {
         console.log("the response should follow");
@@ -126,5 +156,47 @@
         console.log(error);
       })
       .importCSVFromGoogleDrive(csvDate);
+  }
+
+  function copyBudget() {
+    var copyDate = document.getElementById("firstDate").value;
+    console.log("first");
+    console.log(copyDate);
+    google.script.run
+      .withSuccessHandler(function(response) {
+        var copyDate = document.getElementById("firstDate").value;
+        console.log("second");
+        console.log(response);
+      })
+      .withFailureHandler(function(error) {
+        console.log(error);
+      })
+      .copyBudget(copyDate);
+  }
+
+  function hiddenGarden() {
+    google.script.run
+      .withSuccessHandler(function(response) {})
+      .withFailureHandler(function(error) {
+        console.log(error);
+      })
+      .goToGarden();
+  }
+
+  function hideSheets() {
+    google.script.run
+      .withSuccessHandler(function(response) {})
+      .withFailureHandler(function(error) {
+        console.log(error);
+      })
+      .goHideSheets();
+  }
+  function runningTotalButton() {
+    google.script.run
+      .withSuccessHandler(function(response) {})
+      .withFailureHandler(function(error) {
+        console.log(error);
+      })
+      .runningTotalButton();
   }
 </script>
